@@ -11,10 +11,10 @@
 
 
 std::map<char,int> Op_Priority{
-    {'+', 1}, {'-',1}, {'*',2},{'/',2}
+    {'+', 1}, {'-',1}, {'*',2},{'/',2}, {'^',2}
 };
 
-enum types{number, operation, open_bracket,close_bracket};
+enum types { number, operation, open_bracket, close_bracket, letter };
 
 class Term{
 protected:
@@ -66,9 +66,15 @@ public:
     }
 };
 
-
-
-
+class Letter :public Term {
+    void foo() {};
+    char value;
+public:
+    char GetValue() { return value; }
+    Letter(char _value): value(_value) {
+        type = letter;
+    }
+};
 
 
 double ExecutePostfix(Vector<Term*> terms) {
@@ -111,6 +117,10 @@ double ExecutePostfix(Vector<Term*> terms) {
             }
             case '/': {
                 st.push(new Number(temp1 / temp2));
+                break;
+            }
+            case '^': {
+                st.push(new Number(pow(temp1,temp2)));
                 break;
             }
 

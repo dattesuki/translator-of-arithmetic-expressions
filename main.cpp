@@ -14,7 +14,7 @@ int main() {
     Vector<Term*> terms;
     terms = String_To_Terms(st);
 
-    cout << ExecutePostfix(terms);
+    cout << endl<<ExecutePostfix(terms);
 
     /* Vector<Term*> terms;
 
