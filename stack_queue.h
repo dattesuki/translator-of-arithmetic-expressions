@@ -31,6 +31,20 @@ public:
 		std::copy(arr, arr + (sz * sizeof(T)), pMem);
 	}
 
+	Vector<T>& operator=(const Vector<T>& v) {
+		if (&v != this) {
+			capacity = v.capacity;
+			if (sz != v.sz) {
+				sz = v.sz;
+				delete[] pMem;
+				pMem = new T[capacity];
+				if (pMem == nullptr) throw bad_alloc();
+			}
+			std::copy(v.pMem, v.pMem + sz, pMem);
+		}
+		return *this;
+	}
+
     ~Vector(){
         delete[] pMem;
         pMem=nullptr;
