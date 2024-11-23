@@ -124,7 +124,6 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 
 
 
-
 Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 	Vector<Term*> terms;
 	Stack<Term*> st;
@@ -184,12 +183,3 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 
 
 
-void Execute() {
-	using namespace std;
-	string st;
-	getline(cin, st);
-	Vector<Term*> terms, terms2;
-	terms = String_To_Terms(st);
-	terms2 = Terms_to_Polish(terms);
-	cout << endl << "Result: " << ExecutePostfix(terms2) << endl;
-}

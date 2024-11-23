@@ -3,8 +3,6 @@
 //
 //  Created by Daniil Litvyakov on 18.11.2024.
 //
-
-
 #include "stack_queue.h"
 #include <map>
 
