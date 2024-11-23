@@ -48,18 +48,18 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 			}
 			count++;
 		}
-			if (input_string[i] == '.' || input_string[i] == ',') {
-				dot = true;
-			}
-			else {
-				if ((count != 0) && !(IsNumeral(input_string[i]))) {
-					terms.push_back(new Number(temp));
-					temp = 0;
-					dot = false;
-					count = 0;
-					count_after_dot = 0;
-				}
-			}
+		if (input_string[i] == '.' || input_string[i] == ',') {
+			dot = true;
+		}
+		
+		if ((count != 0) && !(IsNumeral(input_string[i])) && (input_string[i] != '.') && (input_string[i] != ',')) {
+			terms.push_back(new Number(temp));
+			temp = 0;
+			dot = false;
+			count = 0;
+			count_after_dot = 0;
+		}
+		
 
 		if (IsOperator(input_string[i])) terms.push_back(new Operation(input_string[i]));
 
