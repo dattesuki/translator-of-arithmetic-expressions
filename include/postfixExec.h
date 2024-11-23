@@ -51,7 +51,9 @@ public:
 
 class Open_Bracket:public Term{
     void foo() {};
+    int priority = 0;
 public:
+    int GetPriority() { return priority; }
     Open_Bracket() {
         type = open_bracket;
     }

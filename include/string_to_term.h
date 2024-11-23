@@ -137,22 +137,35 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 		//если операция
 		if (old_terms[i]->GetType() == operation){
 			while (!(st.IsEmpty())) {
-				if ((dynamic_cast<Operation*>(old_terms[i])->GetPriority()) <= (dynamic_cast<Operation*>(st.get())->GetPriority())) {
-					terms.push_back(st.get());
-					st.pop();
+				if (st.get()->GetType() == operation) {
+					if ((dynamic_cast<Operation*>(old_terms[i])->GetPriority()) <= (dynamic_cast<Operation*>(st.get())->GetPriority())) {
+						terms.push_back(st.get());
+						st.pop();
+					}
+					else break;
 				}
-				else break;
+				else {//иначе скобка в стеке
+					if ((dynamic_cast<Operation*>(old_terms[i])->GetPriority()) <= (dynamic_cast<Open_Bracket*>(st.get())->GetPriority())) {
+						terms.push_back(st.get());
+						st.pop();
+					}
+					else break;
+				}
 			}
 			st.push(old_terms[i]);
 		}
 
 		//если скобки
 		if (old_terms[i]->GetType() == open_bracket) {
-
+			st.push(old_terms[i]);
 		}
 
 		if (old_terms[i]->GetType() == close_bracket) {
-
+			while (st.get()->GetType() != open_bracket) {
+				terms.push_back(st.get());
+				st.pop();
+			}
+			st.pop(); //удаляем скобку из стека
 		}
 	}
 
