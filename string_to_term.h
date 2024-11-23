@@ -49,6 +49,7 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 			count++;
 		}
 		if (input_string[i] == '.' || input_string[i] == ',') {
+			if (dot == true) throw std::logic_error("double dot");
 			dot = true;
 		}
 		
@@ -90,7 +91,7 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 	double temp_cin;
 	std::map<char,double> MapLetter;
 	if ((A.LowerCase != 0) || (A.UpperCase != 0)) {
-		std::cout << "\n";
+		std::cout << "\nInitialize the variables:\n";
 		for (int i = 0; i < 26; ++i) {
 			if (A.UpperCase & (1 << i)) {
 				std::cout << char(65 + i) << " = ";
@@ -124,11 +125,32 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 
 
 
-Vector<Term*> Terms_to_Polish(Vector<Term*>& V){
+Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 	Vector<Term*> terms;
-	
+	Stack<Term*> st;
+	for (size_t i = 0; i < old_terms.size(); ++i) {
+		//если операнд
+		if ((old_terms[i]->GetType() == number) || (old_terms[i]->GetType() == letter)) {
+			terms.push_back(old_terms[i]);
+		}
 
+		//если операция
+		if (old_terms[i]->GetType() == operation){
+			while (!(st.IsEmpty())) {
+				if ((dynamic_cast<Operation*>(old_terms[i])->GetPriority()) <= (dynamic_cast<Operation*>(st.get())->GetPriority())) {
+					terms.push_back(st.get());
+					st.pop();
+				}
+				else break;
+			}
+			st.push(old_terms[i]);
+		}
+	}
 
+	while ((!(st.IsEmpty()))) {
+		terms.push_back(st.get());
+		st.pop();
+	}
 
 	return terms;
 }

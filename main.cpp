@@ -11,10 +11,10 @@ using namespace std;
 int main() { 
     string st;
     getline(cin,st);
-    Vector<Term*> terms;
+    Vector<Term*> terms,terms2;
     terms = String_To_Terms(st);
-
-    cout << endl<<ExecutePostfix(terms);
+    terms2 = Terms_to_Polish(terms);
+    cout << endl<<"Result: " << ExecutePostfix(terms2)<<endl;
 
     /* Vector<Term*> terms;
 

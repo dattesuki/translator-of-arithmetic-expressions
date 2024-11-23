@@ -33,14 +33,14 @@ public:
 
 	Vector<T>& operator=(const Vector<T>& v) {
 		if (&v != this) {
-			capacity = v.capacity;
-			if (sz != v.sz) {
-				sz = v.sz;
+			sz = v.sz;
+			if (capacity != v.capacity) {
+				capacity = v.capacity;
 				delete[] pMem;
 				pMem = new T[capacity];
 				if (pMem == nullptr) throw bad_alloc();
 			}
-			std::copy(v.pMem, v.pMem + sz, pMem);
+			std::copy(v.pMem, v.pMem + capacity, pMem);
 		}
 		return *this;
 	}
