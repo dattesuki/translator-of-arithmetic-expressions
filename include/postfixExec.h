@@ -1,5 +1,5 @@
 //
-//  Польская запись
+//  
 //
 //  Created by Daniil Litvyakov on 18.11.2024.
 //

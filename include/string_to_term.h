@@ -145,6 +145,15 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 			}
 			st.push(old_terms[i]);
 		}
+
+		//если скобки
+		if (old_terms[i]->GetType() == open_bracket) {
+
+		}
+
+		if (old_terms[i]->GetType() == close_bracket) {
+
+		}
 	}
 
 	while ((!(st.IsEmpty()))) {
@@ -160,3 +169,14 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 	
 
 
+
+
+void Execute() {
+	using namespace std;
+	string st;
+	getline(cin, st);
+	Vector<Term*> terms, terms2;
+	terms = String_To_Terms(st);
+	terms2 = Terms_to_Polish(terms);
+	cout << endl << "Result: " << ExecutePostfix(terms2) << endl;
+}
