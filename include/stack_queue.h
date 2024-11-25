@@ -43,7 +43,7 @@ public:
 				capacity = v.capacity;
 				delete[] pMem;
 				pMem = new T[capacity];
-				if (pMem == nullptr) throw bad_alloc();
+				if (pMem == nullptr) throw std::bad_alloc();
 			}
 			std::copy(v.pMem, v.pMem + capacity, pMem);
 		}
