@@ -8,8 +8,9 @@
 
 using namespace std;
 
-void Execute() {
+double Execute() {
     string st;
+    Vector<Term*> terms, terms2;
     getline(cin, st);
     try {
         check_bracket(st);
@@ -18,14 +19,18 @@ void Execute() {
         cout << "Bad brackets";
     }
 
-    Vector<Term*> terms, terms2;
-    try {
     terms = String_To_Terms(st);
-    terms2 = Terms_to_Polish(terms);
-        cout << endl << "Result: " << ExecutePostfix(terms2) << endl;
-    }
-    catch (...) {
-        cout << "\nBad order";
+
+    if (check_terms(terms) == false) cout << "Error!";
+    else {
+        try {
+            terms2 = Terms_to_Polish(terms);
+            cout << "\nResult: "<<ExecutePostfix(terms2)<<endl;
+        }
+        catch (...) {
+            cout << "\nBad order";
+            return 0;
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-//
+﻿//
 //  
 //
 //  Created by Daniil Litvyakov on 18.11.2024.
@@ -46,5 +46,40 @@ void check_bracket(std::string Expression) {
 }
 
 
+std::map<types, char> type_status{
+    {number,0},{letter,0}, {operation, 1} , {open_bracket,2},{close_bracket ,3}
+};
 
 
+/*
+                    �������         ��������        �����������     �����������
+�������                 -               +               -               +
+��������                +               -               +               -
+�����������             +               -               +               -
+������������            -               +               -               +
+
+
+    ����� ���� ������:
+        (0)�������� � �����������
+        (1)������� � ����������� 
+
+        ��� ����
+        0->1
+        1->0 
+*/
+bool check_terms(Vector<Term*> terms) {
+    char status=0;
+    status = type_status[terms[0]->GetType()];
+    for (size_t i = 1; i < terms.size(); ++i) {
+        if (status == 0 || status == 3) {
+            if (type_status[terms[i]->GetType()] == 0 || type_status[terms[i]->GetType()] == 2) return false;
+            else status = type_status[terms[i]->GetType()];
+        }
+        
+        else{
+            if ((type_status[terms[i]->GetType()] == 1) || (type_status[terms[i]->GetType()] == 3)) return false;
+            else status = type_status[terms[i]->GetType()];
+        }
+    }
+    return true;
+}
