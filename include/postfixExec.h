@@ -9,7 +9,7 @@
 
 
 std::map<char,int> Op_Priority{
-    {'+', 1}, {'-',1}, {'*',2},{'/',2}, {'^',2}
+    {'+', 1}, {'-',1}, {'*',2},{'/',2}, {'^',3}
 };
 
 enum types { number, operation, open_bracket, close_bracket, letter };
