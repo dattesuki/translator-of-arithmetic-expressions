@@ -1,4 +1,4 @@
-//
+п»ї//
 //  
 //
 //  Created by Daniil Litvyakov on 18.11.2024.
@@ -32,7 +32,7 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 	Letters A;
 
 	double temp=0;
-	int count=0;
+	bool is_number = false;
 	bool dot = false;
 	int count_after_dot = 0;
 
@@ -46,18 +46,18 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 			else {
 				temp += (input_string[i] - '0')/pow(10,(++count_after_dot));
 			}
-			count++;
+			is_number = true;
 		}
 		if (input_string[i] == '.' || input_string[i] == ',') {
 			if (dot == true) throw std::logic_error("double dot");
 			dot = true;
 		}
 		
-		if ((count != 0) && !(IsNumeral(input_string[i])) && (input_string[i] != '.') && (input_string[i] != ',')) {
+		if ((is_number != false) && !(IsNumeral(input_string[i])) && (input_string[i] != '.') && (input_string[i] != ',')) {
 			terms.push_back(new Number(temp));
 			temp = 0;
 			dot = false;
-			count = 0;
+			is_number = false;
 			count_after_dot = 0;
 		}
 		
@@ -81,8 +81,8 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 		}
 
 
-	//если цифра на последнем месте
-	if (count != 0) {
+	//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	if (is_number == true) {
 		terms.push_back(new Number(temp));
 	}
 
@@ -106,7 +106,7 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 				MapLetter[char(97 + i)] = temp_cin;
 			}
 		}
-		//замена букв на числа в векторе термов(лексем)
+		//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅпїЅпїЅпїЅпїЅ)
 		for (int i = 0; i < terms.size(); ++i) {
 			if (terms[i]->GetType() == letter) {
 				terms[i] = new Number(MapLetter[dynamic_cast<Letter*>(terms[i])->GetValue()]);
@@ -128,12 +128,12 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 	Vector<Term*> terms;
 	Stack<Term*> st;
 	for (size_t i = 0; i < old_terms.size(); ++i) {
-		//если операнд
+		//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		if ((old_terms[i]->GetType() == number) || (old_terms[i]->GetType() == letter)) {
 			terms.push_back(old_terms[i]);
 		}
 
-		//если операция
+		//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		if (old_terms[i]->GetType() == operation){
 			while (!(st.IsEmpty())) {
 				if (st.get()->GetType() == operation) {
@@ -143,7 +143,7 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 					}
 					else break;
 				}
-				else {//иначе скобка в стеке
+				else {//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
 					if ((dynamic_cast<Operation*>(old_terms[i])->GetPriority()) <= (dynamic_cast<Open_Bracket*>(st.get())->GetPriority())) {
 						terms.push_back(st.get());
 						st.pop();
@@ -154,7 +154,7 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 			st.push(old_terms[i]);
 		}
 
-		//если скобки
+		//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		if (old_terms[i]->GetType() == open_bracket) {
 			st.push(old_terms[i]);
 		}
@@ -164,7 +164,7 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 				terms.push_back(st.get());
 				st.pop();
 			}
-			st.pop(); //удаляем скобку из стека
+			st.pop(); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		}
 	}
 
