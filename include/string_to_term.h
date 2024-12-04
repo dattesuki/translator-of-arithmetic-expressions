@@ -81,13 +81,12 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 		}
 
 
-	//���� ����� �� ��������� �����
 	if (is_number == true) {
 		terms.push_back(new Number(temp));
 	}
 
 
-
+	char temp_letter;
 	double temp_cin;
 	std::map<char,double> MapLetter;
 	if ((A.LowerCase != 0) || (A.UpperCase != 0)) {
@@ -106,10 +105,12 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 				MapLetter[char(97 + i)] = temp_cin;
 			}
 		}
-		//������ ���� �� ����� � ������� ������(������)
+
 		for (int i = 0; i < terms.size(); ++i) {
 			if (terms[i]->GetType() == letter) {
-				terms[i] = new Number(MapLetter[dynamic_cast<Letter*>(terms[i])->GetValue()]);
+				temp_letter = dynamic_cast<Letter*>(terms[i])->GetValue();
+				delete terms[i];
+				terms[i] = new Number(MapLetter[temp_letter]);
 			}
 		}
 
@@ -128,12 +129,10 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 	Vector<Term*> terms;
 	Stack<Term*> st;
 	for (size_t i = 0; i < old_terms.size(); ++i) {
-		//���� �������
 		if ((old_terms[i]->GetType() == number) || (old_terms[i]->GetType() == letter)) {
 			terms.push_back(old_terms[i]);
 		}
 
-		//���� ��������
 		if (old_terms[i]->GetType() == operation){
 			while (!(st.IsEmpty())) {
 				if (st.get()->GetType() == operation) {
@@ -143,7 +142,7 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 					}
 					else break;
 				}
-				else {//����� ������ � �����
+				else {
 					if ((dynamic_cast<Operation*>(old_terms[i])->GetPriority()) <= (dynamic_cast<Open_Bracket*>(st.get())->GetPriority())) {
 						terms.push_back(st.get());
 						st.pop();
@@ -154,7 +153,6 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 			st.push(old_terms[i]);
 		}
 
-		//���� ������
 		if (old_terms[i]->GetType() == open_bracket) {
 			st.push(old_terms[i]);
 		}
@@ -164,7 +162,7 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 				terms.push_back(st.get());
 				st.pop();
 			}
-			st.pop(); //������� ������ �� �����
+			st.pop();
 		}
 	}
 

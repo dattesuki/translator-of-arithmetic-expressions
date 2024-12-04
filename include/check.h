@@ -23,7 +23,7 @@ char GetOpenBracket(char t) {
     return 0;
 }
 
-void check_bracket(std::string Expression) {
+bool check_bracket(std::string Expression) {
     Stack<char> st;
 
     for (int i = 0; i < Expression.length(); i++) {
@@ -31,18 +31,20 @@ void check_bracket(std::string Expression) {
             st.push(Expression[i]);
         }
         if (IsCloseBracket(Expression[i])) {
-            if (st.IsEmpty()) throw std::logic_error("bad brackets");
+            if (st.IsEmpty()) return false;
             else {
-                if (st.get() != GetOpenBracket(Expression[i])) throw std::logic_error("bad brackets");
+                if (st.get() != GetOpenBracket(Expression[i])) return false;
                 else {
                     if (st.IsEmpty() == 0) (st.pop());
-                    else throw std::logic_error("bad brackets");
+                    else return false;
                 }
             }
         }
     }
 
-    if (st.IsEmpty() != 1) { throw std::logic_error("bad brackets"); }
+    if (st.IsEmpty() != 1) { return false; }
+
+    return true;
 }
 
 
@@ -51,22 +53,6 @@ std::map<types, char> type_status{
 };
 
 
-/*
-                    �������         ��������        �����������     �����������
-�������                 -               +               -               +
-��������                +               -               +               -
-�����������             +               -               +               -
-������������            -               +               -               +
-
-
-    ����� ���� ������:
-        (0)�������� � �����������
-        (1)������� � ����������� 
-
-        ��� ����
-        0->1
-        1->0 
-*/
 bool check_terms(Vector<Term*> terms) {
     char status=0;
     status = type_status[terms[0]->GetType()];

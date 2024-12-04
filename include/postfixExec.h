@@ -120,7 +120,7 @@ double ExecutePostfix(Vector<Term*> terms) {
                 break;
             }
             case '^': {
-                st.push(new Number(pow(temp1,temp2)));
+                st.push(new Number(pow(temp1, temp2)));
                 break;
             }
 
