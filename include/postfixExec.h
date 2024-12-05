@@ -5,7 +5,7 @@
 //
 #include "stack_queue.h"
 #include <map>
-
+#include "cmath"
 
 
 std::map<char,int> Op_Priority{
@@ -77,7 +77,7 @@ public:
 };
 
 
-double ExecutePostfix(Vector<Term*> terms) {
+double Execute(Vector<Term*> terms) {
     types current_type;
     Stack<Term*> st;
 

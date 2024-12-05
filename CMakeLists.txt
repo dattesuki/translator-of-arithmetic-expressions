@@ -16,7 +16,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEAS
 
 #set(LIBRARY "${PROJECT_NAME}")
 set(CUSTOM "${PROJECT_NAME}")
-#set(TESTS   "test_${PROJECT_NAME}")
+set(TESTS   "test_${PROJECT_NAME}")
 set(INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 include_directories("${INCLUDE}" gtest)
@@ -25,6 +25,6 @@ include_directories("${INCLUDE}" gtest)
 add_subdirectory(include)
 #add_subdirectory(src)
 add_subdirectory(main)
-#add_subdirectory(gtest)
-#add_subdirectory(test)
+add_subdirectory(gtest)
+add_subdirectory(test)
 
