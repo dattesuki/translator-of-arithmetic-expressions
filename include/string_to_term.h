@@ -13,10 +13,6 @@ struct Letters {
 	Letters() :UpperCase(0), LowerCase(0) {};
 };
 
-
-
-
-
 bool IsOperator(char t) {
 	if ((t == '+') || (t == '-') || (t == '*') || (t == '/') || (t == '^')) return true;
 	else return false;
