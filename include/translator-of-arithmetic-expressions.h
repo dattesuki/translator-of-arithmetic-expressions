@@ -1,3 +1,4 @@
+#pragma once
 #include "check.h"
 
 
@@ -32,6 +33,12 @@ bool Execute() {
         FreeMemory(terms); //it is enough to delete only terms, because for terms2 there was no application of the new operator
         //FreeMemory(terms2);
         return true;
+    }
+    catch (std::string error) {
+        std::cout <<error;
+        FreeMemory(terms);
+        //FreeMemory(terms2);
+        return false;
     }
     catch (...) {
         std::cout << "\nBad order";

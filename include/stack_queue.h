@@ -5,6 +5,7 @@
 //
 //	реализация ветктора
 //	выбрана реализация на динамическом массиве
+#pragma once
 #include <algorithm>
 #include <iostream>
 #include <vector>

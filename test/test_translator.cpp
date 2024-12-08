@@ -2,6 +2,39 @@
 #include <gtest.h>
 //#include <sstream> // to std::istringstream
 
+TEST(Check, last_operation) {
+	testing::internal::CaptureStdout();
+	std::istringstream MyInput("5.5 + 4.5 + ");
+	std::streambuf* originalCinBuffer = std::cin.rdbuf();
+	std::cin.rdbuf(MyInput.rdbuf());
+	Execute();
+	std::cin.rdbuf(originalCinBuffer);
+	std::string output1 = testing::internal::GetCapturedStdout();
+	testing::internal::CaptureStdout();
+	std::cout << "Incorrect sequence in the expression!";
+	std::string output2 = testing::internal::GetCapturedStdout();
+	EXPECT_EQ(output1, output2);
+
+	//input:5.5 + 4.5 +
+	//output:Incorrect sequence in the expression!
+}
+
+TEST(Check, divided_by_zero) {
+	testing::internal::CaptureStdout();
+	std::istringstream MyInput("5.5 / 0 ");
+	std::streambuf* originalCinBuffer = std::cin.rdbuf();
+	std::cin.rdbuf(MyInput.rdbuf());
+	Execute();
+	std::cin.rdbuf(originalCinBuffer);
+	std::string output1 = testing::internal::GetCapturedStdout();
+	testing::internal::CaptureStdout();
+	std::cout << "\nResult: DivideByZero";
+	std::string output2 = testing::internal::GetCapturedStdout();
+	EXPECT_EQ(output1, output2);
+
+	//input:5.5 / 0
+	//output:Incorrect sequence in the expression!
+}
 
 TEST(Check, only_open_bracket) {
 	testing::internal::CaptureStdout();
