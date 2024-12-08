@@ -3,6 +3,7 @@
 //
 //  Created by Daniil Litvyakov on 18.11.2024.
 //
+#pragma once
 #include "postfixExec.h"
 #include <string>
 
@@ -12,10 +13,6 @@ struct Letters {
 	unsigned int LowerCase : 26;
 	Letters() :UpperCase(0), LowerCase(0) {};
 };
-
-
-
-
 
 bool IsOperator(char t) {
 	if ((t == '+') || (t == '-') || (t == '*') || (t == '/') || (t == '^')) return true;
@@ -62,20 +59,23 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 		}
 		
 
-		if (IsOperator(input_string[i])) terms.push_back(new Operation(input_string[i]));
+		if (IsOperator(input_string[i])) {
+			terms.push_back(new Operation(input_string[i]));
+			if (terms.back() == nullptr) throw std::bad_alloc();
+		}
 
 		if (input_string[i] == '(') terms.push_back(new Open_Bracket());
 
 		if (input_string[i] == ')') terms.push_back(new Close_Bracket());
 
-		if ((input_string[i]) >= 65 && (input_string[i] <= 90)) {
+		if ((input_string[i]) >= 'A' && (input_string[i] <= 'Z')) {
 			terms.push_back(new Letter(input_string[i]));
-			A.UpperCase |= (1 << (input_string[i] - 65));
+			A.UpperCase |= (1 << (input_string[i] - 'A'));
 		}
 
-		if ((input_string[i]) >= 97 && (input_string[i] <= 122)) {
+		if ((input_string[i]) >= 'a' && (input_string[i] <= 'z')) {
 			terms.push_back(new Letter(input_string[i]));
-			A.LowerCase |= (1 << (input_string[i] - 97));
+			A.LowerCase |= (1 << (input_string[i] - 'a'));
 		}
 
 		}
@@ -93,22 +93,22 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 		std::cout << "\nInitialize the variables:\n";
 		for (int i = 0; i < 26; ++i) {
 			if (A.UpperCase & (1 << i)) {
-				std::cout << char(65 + i) << " = ";
+				std::cout << char('A' + i) << " = ";
 				std::cin >> temp_cin;
-				MapLetter[char(65 + i)] = temp_cin;
+				MapLetter[char('A' + i)] = temp_cin;
 			}
 		}
 		for (int i = 0; i < 26; ++i) {
 			if (A.LowerCase & (1 << i)) {
-				std::cout << char(97 + i) << " = ";
+				std::cout << char('a' + i) << " = ";
 				std::cin >> temp_cin;
-				MapLetter[char(97 + i)] = temp_cin;
+				MapLetter[char('a' + i)] = temp_cin;
 			}
 		}
 
 		for (int i = 0; i < terms.size(); ++i) {
 			if (terms[i]->GetType() == letter) {
-				temp_letter = dynamic_cast<Letter*>(terms[i])->GetValue();
+				temp_letter = static_cast<Letter*>(terms[i])->GetValue();
 				delete terms[i];
 				terms[i] = new Number(MapLetter[temp_letter]);
 			}
@@ -136,18 +136,14 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 		if (old_terms[i]->GetType() == operation){
 			while (!(st.IsEmpty())) {
 				if (st.get()->GetType() == operation) {
-					if ((dynamic_cast<Operation*>(old_terms[i])->GetPriority()) <= (dynamic_cast<Operation*>(st.get())->GetPriority())) {
+					if ((static_cast<Operation*>(old_terms[i])->GetPriority()) <= (static_cast<Operation*>(st.get())->GetPriority())) {
 						terms.push_back(st.get());
 						st.pop();
 					}
 					else break;
 				}
-				else {
-					if ((dynamic_cast<Operation*>(old_terms[i])->GetPriority()) <= (dynamic_cast<Open_Bracket*>(st.get())->GetPriority())) {
-						terms.push_back(st.get());
-						st.pop();
-					}
-					else break;
+				else { //иначе открывающая скобка
+					break;
 				}
 			}
 			st.push(old_terms[i]);

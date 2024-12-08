@@ -3,9 +3,10 @@
 //
 //  Created by Daniil Litvyakov on 18.11.2024.
 //
+#pragma once
 #include "stack_queue.h"
 #include <map>
-
+#include "cmath"
 
 
 std::map<char,int> Op_Priority{
@@ -17,15 +18,14 @@ enum types { number, operation, open_bracket, close_bracket, letter };
 class Term{
 protected:
     types type;
-    virtual void foo()=0;
+    //virtual void foo() {};
+    Term() {};
 public:
     types GetType(){return type;}
-    Term() {};
 };
 
 class Number:public Term{
 private:
-    void foo() {};
     double Value;
 public:
     double GetNumber(){return Value;}
@@ -35,7 +35,6 @@ public:
 };
 
 class Operation:public Term{
-    void foo() {};
     char op;
     int priority;
 public:
@@ -48,10 +47,9 @@ public:
 };
 
 class Open_Bracket:public Term{
-    void foo() {};
-    int priority = 0;
+    //int priority = 0;
 public:
-    int GetPriority() { return priority; }
+    //int GetPriority() { return priority; }
     Open_Bracket() {
         type = open_bracket;
     }
@@ -59,7 +57,6 @@ public:
 
 
 class Close_Bracket :public Term {
-    void foo() {};
 public:
     Close_Bracket() {
         type = close_bracket;
@@ -67,7 +64,6 @@ public:
 };
 
 class Letter :public Term {
-    void foo() {};
     char value;
 public:
     char GetValue() { return value; }
@@ -77,7 +73,7 @@ public:
 };
 
 
-double ExecutePostfix(Vector<Term*> terms) {
+double Execute(Vector<Term*> terms) {
     types current_type;
     Stack<Term*> st;
 
@@ -91,18 +87,20 @@ double ExecutePostfix(Vector<Term*> terms) {
         switch (current_type) {
 
         case(number): {
-            st.push(terms[i]);
+            st.push(new Number(static_cast<Number*>(terms[i])->GetNumber()));
             break;
         }
 
 
         case (operation): {
-            temp2 = dynamic_cast<Number*>(st.get())->GetNumber();
+            temp2 = static_cast<Number*>(st.get())->GetNumber();
+            delete st.get();
             st.pop();
-            temp1 = dynamic_cast<Number*>(st.get())->GetNumber();
+            temp1 = static_cast<Number*>(st.get())->GetNumber();
+            delete st.get();
             st.pop();
 
-            switch (dynamic_cast<Operation*>(terms[i])->GetValue()) {
+            switch (static_cast<Operation*>(terms[i])->GetValue()) {
             case '+': {
                 st.push(new Number(temp1 + temp2));
                 break;
@@ -116,6 +114,7 @@ double ExecutePostfix(Vector<Term*> terms) {
                 break;
             }
             case '/': {
+                if (temp2 == 0.0) throw std::string{ "DivideByZero" };
                 st.push(new Number(temp1 / temp2));
                 break;
             }
@@ -132,7 +131,7 @@ double ExecutePostfix(Vector<Term*> terms) {
     }
 
 
-    return dynamic_cast<Number*>(st.get())->GetNumber();
+    return static_cast<Number*>(st.get())->GetNumber();
 }
 
 

@@ -3,6 +3,7 @@
 //
 //  Created by Daniil Litvyakov on 18.11.2024.
 //
+#pragma once
 #include "string_to_term.h"
 
 
@@ -67,5 +68,6 @@ bool check_terms(Vector<Term*> terms) {
             else status = type_status[terms[i]->GetType()];
         }
     }
+    if ((terms.back()->GetType() == operation) || (terms.back()->GetType() == open_bracket)) return false;
     return true;
 }
