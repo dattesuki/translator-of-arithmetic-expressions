@@ -18,7 +18,7 @@ enum types { number, operation, open_bracket, close_bracket, letter };
 class Term{
 protected:
     types type;
-    virtual void foo() {};
+    //virtual void foo() {};
     Term() {};
 public:
     types GetType(){return type;}
@@ -87,20 +87,20 @@ double Execute(Vector<Term*> terms) {
         switch (current_type) {
 
         case(number): {
-            st.push(new Number(dynamic_cast<Number*>(terms[i])->GetNumber()));
+            st.push(new Number(static_cast<Number*>(terms[i])->GetNumber()));
             break;
         }
 
 
         case (operation): {
-            temp2 = dynamic_cast<Number*>(st.get())->GetNumber();
+            temp2 = static_cast<Number*>(st.get())->GetNumber();
             delete st.get();
             st.pop();
-            temp1 = dynamic_cast<Number*>(st.get())->GetNumber();
+            temp1 = static_cast<Number*>(st.get())->GetNumber();
             delete st.get();
             st.pop();
 
-            switch (dynamic_cast<Operation*>(terms[i])->GetValue()) {
+            switch (static_cast<Operation*>(terms[i])->GetValue()) {
             case '+': {
                 st.push(new Number(temp1 + temp2));
                 break;
@@ -131,7 +131,7 @@ double Execute(Vector<Term*> terms) {
     }
 
 
-    return dynamic_cast<Number*>(st.get())->GetNumber();
+    return static_cast<Number*>(st.get())->GetNumber();
 }
 
 

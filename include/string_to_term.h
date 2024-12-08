@@ -108,7 +108,7 @@ Vector<Term*> String_To_Terms(std::string input_string) {
 
 		for (int i = 0; i < terms.size(); ++i) {
 			if (terms[i]->GetType() == letter) {
-				temp_letter = dynamic_cast<Letter*>(terms[i])->GetValue();
+				temp_letter = static_cast<Letter*>(terms[i])->GetValue();
 				delete terms[i];
 				terms[i] = new Number(MapLetter[temp_letter]);
 			}
@@ -136,7 +136,7 @@ Vector<Term*> Terms_to_Polish(Vector<Term*> old_terms){
 		if (old_terms[i]->GetType() == operation){
 			while (!(st.IsEmpty())) {
 				if (st.get()->GetType() == operation) {
-					if ((dynamic_cast<Operation*>(old_terms[i])->GetPriority()) <= (dynamic_cast<Operation*>(st.get())->GetPriority())) {
+					if ((static_cast<Operation*>(old_terms[i])->GetPriority()) <= (static_cast<Operation*>(st.get())->GetPriority())) {
 						terms.push_back(st.get());
 						st.pop();
 					}
