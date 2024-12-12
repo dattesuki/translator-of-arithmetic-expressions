@@ -47,3 +47,44 @@ bool Execute() {
         return false;
     }
 }
+
+
+
+void ExecuteFewExpressions() {
+    std::string st;
+    Vector<Term*> terms, terms2;
+    std::cout << "Enter a new arithmetic expression in a new line\nIf you want to stop typing, enter 0\n\n";
+    getline(std::cin, st);
+    
+    while (st != "0") {
+        if (!check_bracket(st)) {
+            std::cout << "Bad brackets";
+            continue;
+        }
+
+        terms = String_To_Terms_with_few_expressions(st);
+
+        if (check_terms(terms) == false) {
+            std::cout << "Incorrect sequence in the expression!";
+            FreeMemory(terms);
+        }
+
+        try {
+            terms2 = Terms_to_Polish(terms); //terms in polish
+            std::cout << "Result: ";
+            std::cout << Execute(terms2) << std::endl;
+            FreeMemory(terms); //it is enough to delete only terms, because for terms2 there was no application of the new operator
+        }
+        catch (std::string error) {
+            std::cout << error;
+            FreeMemory(terms);
+        }
+        //catch (...) {
+          //  std::cout << "Bad order";
+            //FreeMemory(terms);
+        //}
+        std::cout << std::endl;
+        st = std::string();
+        while(st=="") getline(std::cin, st);
+    }
+}
