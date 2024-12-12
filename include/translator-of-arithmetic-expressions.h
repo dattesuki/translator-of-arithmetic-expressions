@@ -30,20 +30,17 @@ bool Execute() {
         terms2 = Terms_to_Polish(terms); //terms in polish
         std::cout << "\nResult: ";
         std::cout << Execute(terms2) << std::endl;
-        FreeMemory(terms); //it is enough to delete only terms, because for terms2 there was no application of the new operator
-        //FreeMemory(terms2);
+        FreeMemory(terms);
         return true;
     }
     catch (std::string error) {
         std::cout <<error;
         FreeMemory(terms);
-        //FreeMemory(terms2);
         return false;
     }
     catch (...) {
         std::cout << "\nBad order";
         FreeMemory(terms);
-        //FreeMemory(terms2);
         return false;
     }
 }
@@ -51,40 +48,44 @@ bool Execute() {
 
 
 void ExecuteFewExpressions() {
-    std::string st;
+    std::string st="";
     Vector<Term*> terms, terms2;
     std::cout << "Enter a new arithmetic expression in a new line\nIf you want to stop typing, enter 0\n\n";
-    getline(std::cin, st);
     
     while (st != "0") {
+        getline(std::cin, st);
+        while(st=="") getline(std::cin, st);
+
         if (!check_bracket(st)) {
-            std::cout << "Bad brackets";
+            std::cout << "Bad brackets\n\n";
             continue;
         }
 
         terms = String_To_Terms_with_few_expressions(st);
 
         if (check_terms(terms) == false) {
-            std::cout << "Incorrect sequence in the expression!";
+            std::cout << "Incorrect sequence in the expression!\n\n";
             FreeMemory(terms);
+            continue;
         }
 
         try {
-            terms2 = Terms_to_Polish(terms); //terms in polish
+            terms2 = Terms_to_Polish(terms);
             std::cout << "Result: ";
             std::cout << Execute(terms2) << std::endl;
-            FreeMemory(terms); //it is enough to delete only terms, because for terms2 there was no application of the new operator
+            FreeMemory(terms); 
         }
         catch (std::string error) {
             std::cout << error;
             FreeMemory(terms);
+            continue;
         }
-        //catch (...) {
-          //  std::cout << "Bad order";
-            //FreeMemory(terms);
-        //}
+        catch (...) {
+            std::cout << "Bad order\n\n";
+            FreeMemory(terms);
+            continue;
+        }
         std::cout << std::endl;
         st = std::string();
-        while(st=="") getline(std::cin, st);
     }
 }
