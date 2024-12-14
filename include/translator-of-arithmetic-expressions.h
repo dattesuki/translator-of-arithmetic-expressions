@@ -55,7 +55,7 @@ void ExecuteFewExpressions() {
     while (st != "0") {
         getline(std::cin, st);
         while(st=="") getline(std::cin, st);
-
+        if (st == "0") break;
         if (!check_bracket(st)) {
             std::cout << "Bad brackets\n\n";
             continue;
@@ -76,7 +76,7 @@ void ExecuteFewExpressions() {
             FreeMemory(terms); 
         }
         catch (std::string error) {
-            std::cout << error;
+            std::cout << error<<"\n\n";
             FreeMemory(terms);
             continue;
         }
