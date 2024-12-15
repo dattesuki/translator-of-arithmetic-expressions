@@ -10,7 +10,7 @@ using namespace std;
 
 
 int main() { 
-    Execute();
+    ExecuteFewExpressions();
     return 0; 
 }
 
